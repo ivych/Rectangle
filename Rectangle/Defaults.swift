@@ -50,6 +50,7 @@ class Defaults {
     static let todoMode = BoolDefault(key: "todoMode")
     static let todoApplication = StringDefault(key: "todoApplication")
     static let todoSidebarWidth = FloatDefault(key: "todoSidebarWidth", defaultValue: 400)
+    static let todoLeft = BoolDefault(key: "todoLeft")
     static let snapModifiers = IntDefault(key: "snapModifiers")
     static let attemptMatchOnNextPrevDisplay = OptionalBoolDefault(key: "attemptMatchOnNextPrevDisplay")
     static let altThirdCycle = OptionalBoolDefault(key: "altThirdCycle")
@@ -99,6 +100,7 @@ class Defaults {
         todoMode,
         todoApplication,
         todoSidebarWidth,
+        todoLeft,
         snapModifiers,
         attemptMatchOnNextPrevDisplay,
         altThirdCycle,
