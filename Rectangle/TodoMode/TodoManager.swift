@@ -51,7 +51,13 @@ class TodoManager {
                 }
 
                 var rect = todoWindow.rectOfElement()
-                rect.origin.x = screenFrame.maxX - CGFloat(Defaults.todoSidebarWidth.value)
+                
+                // Position the todo Sidebar
+                if (Defaults.todoLeft.enabled) {
+                    rect.origin.x = screenFrame.minX
+                } else {
+                    rect.origin.x = screenFrame.maxX - CGFloat(Defaults.todoSidebarWidth.value)
+                }
                 rect.origin.y = screenFrame.minY
                 rect.size.height = screen.adjustedVisibleFrame.height
                 rect.size.width = CGFloat(Defaults.todoSidebarWidth.value)
@@ -70,17 +76,28 @@ class TodoManager {
     
     private static func shiftWindowOffSidebar(_ w: AccessibilityElement, screenFrame: CGRect) {
         var rect = w.rectOfElement()
-
-        if (rect.maxX > (screenFrame.maxX - CGFloat(Defaults.todoSidebarWidth.value))) {
-            // Shift it to the left
-            rect.origin.x = max (0, rect.origin.x - (rect.maxX - (screenFrame.maxX - CGFloat(Defaults.todoSidebarWidth.value))))
-
-            // If it's still too wide, scale it down
-            if (rect.origin.x == 0) {
-                rect.size.width = min(rect.size.width, screenFrame.maxX - CGFloat(Defaults.todoSidebarWidth.value))
+        
+        if (Defaults.todoLeft.enabled) {
+            if (rect.minX < (CGFloat(Defaults.todoSidebarWidth.value))) {
+                // Shift it to the right
+                rect.origin.x = rect.origin.x + (max(500, CGFloat(Defaults.todoSidebarWidth.value)) - rect.minX)
+                // If it's still too wide, scale it down
+                if (rect.origin.x == max(500, CGFloat(Defaults.todoSidebarWidth.value))) {
+                    rect.size.width = min(rect.size.width, screenFrame.maxX - CGFloat(Defaults.todoSidebarWidth.value))
+                }
             }
-
-            w.setRectOf(rect)
+        } else {
+            if (rect.maxX > (screenFrame.maxX - CGFloat(Defaults.todoSidebarWidth.value))) {
+                // Shift it to the left
+                rect.origin.x = max (0, rect.origin.x - (rect.maxX - (screenFrame.maxX - CGFloat(Defaults.todoSidebarWidth.value))))
+                
+                // If it's still too wide, scale it down
+                if (rect.origin.x == 0) {
+                    rect.size.width = min(rect.size.width, screenFrame.maxX - CGFloat(Defaults.todoSidebarWidth.value))
+                }
+            }
         }
+        
+        w.setRectOf(rect)
     }
 }
